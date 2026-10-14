@@ -1,0 +1,29 @@
+# omp project config for this repository.
+# Global file lives at ~/.omp/agent/config.yml; this file applies to sessions
+# started in this directory only. Arrays are replaced, not merged, by
+# higher-precedence layers. Every key below is a real omp setting
+# (see `omp config list`); unknown keys warn and read as defaults.
+# Uncomment only what this repo has decided it needs.
+
+# Friction: `yolo` (default) auto-approves all tiers; `write` auto-approves
+# read+workspace-write and prompts for exec (bash/eval/browser/task).
+# Keep the default until prompts interrupt flow, then consider:
+# tools:
+#   approvalMode: write
+
+# Memory: default `off` (no persistence). `local` keeps repo-scoped facts
+# via retain/recall/learn with zero setup; hindsight/mnemopi need backends.
+# memory:
+#   backend: local
+# autolearn:
+#   enabled: false
+
+# Model routing: uncomment to pin roles for this repo. Missing roles fall
+# back to global roles. Prefer env/flags (--smol/--slow/--plan) for trials.
+# modelRoles:
+#   smol: openai/gpt-4.1-mini
+#   slow: anthropic/claude-opus-4-5:high
+
+# Extra context filenames (beside AGENTS.md). Empty by default.
+# contextFiles:
+#   extra: [AGENTS.local.md]
