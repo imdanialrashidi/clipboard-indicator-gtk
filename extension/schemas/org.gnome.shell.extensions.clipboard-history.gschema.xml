@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="clipboard-history@local">
+    <schema id="org.gnome.shell.extensions.clipboard-history"
+        path="/org/gnome/shell/extensions/clipboard-history/">
+
+        <key name="history-size" type="i">
+            <default>30</default>
+            <summary>Maximum number of history entries</summary>
+            <description>
+                Oldest unpinned entries are evicted first. Range 1–100.
+            </description>
+        </key>
+
+        <key name="item-bytes-max" type="i">
+            <default>51200</default>
+            <summary>Maximum stored bytes per entry (UTF-8)</summary>
+            <description>
+                Longer copies are truncated on a character boundary and marked truncated. Range 1024–524288.
+            </description>
+        </key>
+
+        <key name="total-bytes-max" type="i">
+            <default>1048576</default>
+            <summary>Maximum total stored bytes across entries</summary>
+            <description>
+                Oldest unpinned entries are evicted until under budget. Range 65536–8388608.
+            </description>
+        </key>
+
+        <key name="pinned-max" type="i">
+            <default>10</default>
+            <summary>Maximum pinned entries</summary>
+            <description>
+                Pinning beyond this limit is refused. Range 1–30.
+            </description>
+        </key>
+
+        <key name="paused" type="b">
+            <default>false</default>
+            <summary>Pause history collection</summary>
+            <description>
+                While paused, new clipboard content is ignored. Persisted across restarts.
+            </description>
+        </key>
+
+        <key name="toggle-menu" type="as">
+            <default><![CDATA[['<Super><Shift>v']]]></default>
+            <summary>Toggle the history popup</summary>
+            <description>
+                Keyboard shortcut that opens or closes the clipboard history popup.
+            </description>
+        </key>
+
+    </schema>
+</schemalist>

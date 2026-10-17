@@ -7,3 +7,5 @@ coverage/
 .env.local
 *.log
 .DS_Store
+# Compiled GSettings schemas are build artifacts (pack/install regenerates).
+extension/schemas/gschemas.compiled

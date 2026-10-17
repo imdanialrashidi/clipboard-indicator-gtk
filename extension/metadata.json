@@ -1,0 +1,12 @@
+{
+    "description": "Lightweight, fast, native clipboard history for GNOME Shell.",
+    "gettext-domain": "clipboard-history@local",
+    "name": "Clipboard History",
+    "settings-schema": "org.gnome.shell.extensions.clipboard-history",
+    "shell-version": [
+        "51"
+    ],
+    "url": "https://github.com/omidfarhang/clipboard-indicator-gtk",
+    "uuid": "clipboard-history@local",
+    "version": 1
+}

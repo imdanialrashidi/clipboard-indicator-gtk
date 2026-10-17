@@ -1,0 +1,48 @@
+/* Inherit the Shell theme; layout only. No palette, no gradients. */
+.clipboard-history-menu {
+    min-width: 26em;
+    max-width: 30em;
+    spacing: 6px;
+    padding: 6px;
+}
+
+.clipboard-history-search {
+    margin: 2px;
+}
+
+.clipboard-history-notice {
+    font-style: italic;
+}
+
+.clipboard-history-scroll {
+    min-height: 12em;
+    max-height: 26em;
+}
+
+.clipboard-history-status {
+    padding: 12px 8px;
+}
+
+.clipboard-history-item-text {
+    padding: 0;
+}
+
+.clipboard-history-item-label {
+    padding: 6px 8px;
+}
+
+.clipboard-history-pinned {
+    font-weight: bold;
+}
+
+.clipboard-history-row-button {
+    margin: 2px;
+}
+
+.clipboard-history-toolbar {
+    spacing: 6px;
+}
+
+.clipboard-history-toolbar-button {
+    margin: 2px;
+}

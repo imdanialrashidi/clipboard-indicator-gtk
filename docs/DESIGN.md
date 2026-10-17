@@ -4,93 +4,94 @@ Specific, short, durable. The visual and interaction source of truth shared by b
 
 ## Owner direction
 
-Capture from the user's ordinary brief; do not require every field or a separate approval step. Keep explicit choices separate from agent-proposed details.
+Accepted owner choices (build task approval):
 
-- Owner-stated style / design system:
-- Exact brand colors and intended roles:
-- Theme(s), typography, density, shape, motion, RTL/locales:
-- Must keep / avoid:
-- Agent-proposed details / unresolved choices:
-- Canonical code token source (path; unknown until implemented):
-
-After implementation, the code token source owns resolved values; this document owns intent and token mappings. Update both for an accepted design change. Never maintain a second competing palette.
+- Panel indicator is icon-only (`edit-paste-symbolic`): clipboard text never appears in the top panel. Contents show inside the history popup only.
+- Visual language: restrained, native GNOME Shell theme inheritance. No custom palette, gradients, cards, or decorative clutter.
+- Popup is compact and scannable (single-column rows, first-line preview ≤120 chars, truncated badge); preferences use native GTK4/libadwaita (`Adw.PreferencesPage`).
+- Keyboard interaction, visible focus, and `St.Settings.reducedMotion` honored from day one; no animation-dependent meaning.
+- Agent-proposed details: 26–30em popup width, 12–26em scroll region, bold label for pinned rows. Open to owner revision with a screenshot.
+- Canonical code token source: `extension/stylesheet.css` (layout only, inherits theme colors) + Shell theme classes (`system-status-icon`, `popup-menu-icon`, `button`).
 
 ## Experience brief
 
-- Product / surface:
-- Primary audience:
-- Single job of this surface:
-- Desired user feeling before → after:
-- Success signal:
+- Product / surface: in-Shell clipboard history — top-panel indicator + popup; Adw preferences window.
+- Primary audience: daily GNOME/Wayland users re-copying recent text (commands, links, snippets).
+- Single job of this surface: open → find → restore to clipboard, in seconds, by mouse or keyboard alone.
+- Desired user feeling before → after: rummaging → certain. The list is already there, in order, searchable.
+- Success signal: restore via Enter/click with zero reading friction; empty/error states explain themselves.
 
 ## Brand character
 
-Useful tensions, not vague adjectives:
-
-- [character], not [failure mode]
-- [character], not [failure mode]
+- Native, not noticeable: feels like part of Shell, not an app.
+- Compact, not dashboardy: one column, no cards, no statistics.
 
 ## Direction
 
-- Visual thesis:
-- Signature element (one restrained choice):
-- What must feel familiar:
-- What must never look generic:
+- Visual thesis: inherit the Shell theme completely; differentiate only through spacing, hierarchy, and typography of list rows.
+- Signature element (one restrained choice): bold row label for pinned entries — the only weight contrast in the list.
+- What must feel familiar: `PopupMenu` rows, `St.Entry` search, `system-status-icon` panel icon, Adw preferences groups.
+- What must never look generic: gradient buttons, card-per-entry layouts, emoji/icon decoration, AI-dashboard chrome.
 
 ## Semantic tokens
 
-Record exact values (HEX/OKLCH) with measured foreground/background contrast; unmeasured contrast is unproven.
+No custom palette: all color comes from the user's Shell theme. Layout-only
+classes live in `extension/stylesheet.css`; color-bearing classes are Shell
+theme classes (`system-status-icon`, `popup-menu-icon`, `button`). Contrast
+is therefore the theme's proven contrast, not ours to measure.
 
-| Role / state | Theme | Exact value or code token | Pair | Contrast proof |
-|---|---|---|---|---|
-| canvas / surface |  |  |  |  |
-| text / muted text |  |  |  |  |
-| action / on-action |  |  |  |  |
-| accent |  |  |  |  |
-| border / focus |  |  |  |  |
-| danger / success / warning |  |  |  |  |
-
-Typography: display / body / utility roles with family, scale, weight, leading, source, license, fallback.
-
-Geometry: spacing rhythm, grid/measure, radius logic, border/shadow logic, icon rules.
+Typography: system font at theme sizes; pinned rows bold. Geometry: 6px
+rhythm, 26–30em popup width, 12–26em scroll region. Icons: symbolic only
+(`edit-paste`, `edit-delete`, `view-pin`, `edit-clear-all`,
+`media-playback-pause/start`, `emblem-system`).
 
 ## Composition and responsiveness
 
-- Desktop composition:
-- Mobile recomposition (not shrinkage):
-- Dense/long-content behavior:
-- Supported viewport/device baseline:
-- RTL/localization behavior:
+- Desktop composition: icon-only panel button; popup stacks search →
+  notice → scrollable single-column list → icon toolbar.
+- Dense/long-content behavior: one-line first-line preview (≤120 chars) +
+  `(truncated)` badge; list scrolls, popup never grows unbounded.
+- RTL/localization behavior: untested — marked UNPROVEN until a live pass.
+  No directional styling in our CSS, so theme RTL applies by default.
 
 ## Components and states
 
-| Component / pattern | Variants | Required states | Reuse or change |
-|---|---|---|---|
-|  |  | default / hover / focus / active / disabled / error |  |
-
-Required journey states: loading, empty, error/retry, success, permission/offline where relevant. No generic card-per-section without intent.
+| Component / pattern | Required states | Notes |
+|---|---|---|
+| Panel indicator | default / hover / focus / active | icon only, never text |
+| Search entry | default / focus / filled / no-match | focused on popup open |
+| History row | default / hover / focus / pinned / truncated | Enter/click restores; pin + delete buttons |
+| Toolbar | pause ↔ resume toggle, clear, settings | pause state visible in popup |
+| Status rows | loading / empty / no-match / paused-empty | distinct copy each |
+| Error banner + Retry | read failure / storage failure | keeps history visible above list |
 
 ## Motion, feedback, voice
 
-- Orchestrated moment (or explicit none); transitions, duration/easing, reduced-motion alternative.
-- Vocabulary/tone, action-label rules, error and empty-state rules, realistic content fixtures.
+- Orchestrated moment: none. Popup open/close uses Shell default animation
+  only, subject to `reducedMotion`; nothing else moves.
+- Vocabulary: plain verbs (Pin, Unpin, Delete, Clear history, Retry, Resume).
+  Errors say what happened + what still works ("Showing kept history").
+  Empty states say the next step ("Copy something to get started").
 
 ## Quality budgets
 
-- Accessibility target: WCAG 2.2 AA unless the product accepts another target.
-- Keyboard/focus/touch target:
-- Performance target: LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1 at p75 unless stricter product budgets are accepted.
-- Lab budget + production rollout proof:
-- Supported browsers and input modes:
+- Accessibility target: keyboard-only operation (arrows/Enter/Esc native to
+  `PopupMenu`), visible focus, accessible names on all buttons; contrast
+  inherited from theme. Formal WCAG audit UNPROVEN.
+- Performance target (PRODUCT.md §6, all UNPROVEN until measured): popup
+  open ≤ 200 ms at 30 entries; search filters same frame; no sync I/O on
+  the clipboard path.
 
 ## Screen acceptance
 
-| Flow / screen | Critical states | Viewports/locales | Visual proof |
-|---|---|---|---|
-|  |  |  |  |
+| Flow / screen | Critical states | Visual proof |
+|---|---|---|
+| Popup journey (open/search/restore/pin) | 2-row, 1-row search, pinned | UNPROVEN — headless has no pixels; UI-tree probe proved structure only |
+| Preferences window | limits/behavior/shortcut groups | UNPROVEN — needs a display |
 
 ## Decision log
 
 | Date | Decision | Evidence / rationale | Revisit when |
 |---|---|---|---|
-|  |  |  |  |
+| 2026-10-14 | Icon-only panel; text in popup only | Owner approval in build task | Owner requests otherwise |
+| 2026-10-14 | No custom palette; theme inheritance | GNOME native feel; zero contrast debt | A branded variant is requested |
